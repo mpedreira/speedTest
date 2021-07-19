@@ -32,15 +32,19 @@ class httpRequest:
         requests.packages.urllib3.disable_warnings(insecureWarning)
         requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += 'HIGH:!DH:!aNULL'
 
-    def downloadSpeed(self):
-        start = time.clock()
+    def speedTest(self):
+        start = time.time()
         self.getRequest()
-        end = time.clock()
-        seconds = (end - start) * 1000
-        size = int(self.response.headers['Content-Length']) / 1024
-        self.log.setDebug("Nos hemos bajado " + str(size) + "M en " +
-                          str(math.trunc(seconds)) + " segundos")
-        return round((size / seconds), 2)
+        end = time.time()
+        seconds = (end - start)
+        size = int(self.response.headers['Content-Length']) * 8 / 1024 / 1024
+        speed = round((size / seconds), 2)
+        self.response.close()
+        self.log.setInfo("Nos hemos bajado " + str(round(size, 2)) + "M en " +
+                         str(round(seconds, 2)) +
+                         " segundos a una velocidad de " + str(speed) +
+                         ' mbps')
+        return speed
 
     def setFiles(self, payload):
         if ('files' not in payload.keys()):

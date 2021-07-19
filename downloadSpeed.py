@@ -11,6 +11,9 @@ import sys
 import ssl
 from classes.jsd import *
 
+MINIMUM_SPEED = 100
+NUM_ERRORS = 8
+
 # MAIN
 config = configurationChangeManagement()
 log = logger(config, 'main')
@@ -23,12 +26,28 @@ log.setInfo('Running at ' + now)
 endpoint = {}
 payload = {}
 endpoint[
-    'uri'] = 'https://static.zara.net/video///mkt/2021/7/aw21-north-new-in-woman/subhome-xmedia-video-28-tribute//large-landscape/subhome-xmedia-video-28-tribute_0_1080p/subhome-xmedia-video-28-tribute_0_1080p_058.ts?ts=1626351539792'
+    'uri'] = 'https://content.rolex.com/dam/homepage/hss/watches/classic-watches/day-date/day-date-40/homepage-day-date-40-m228238-0042.mp4'
+#endpoint[
+#    'uri'] = 'https://releases.ubuntu.com/20.04.2.0/ubuntu-20.04.2.0-desktop-amd64.iso'
 endpoint['certificate'] = False
 payload['data'] = ''
 payload['auth'] = ''
 payload['config'] = config
 payload['headers'] = None
 httpInstance = httpRequest(endpoint, payload)
+j = 0
+
 while True:
-    print(httpInstance.downloadSpeed())
+    i = 0
+    while i >= 0:
+        speed = httpInstance.speedTest()
+        if (speed < MINIMUM_SPEED):
+            i = i + 1
+            if i > NUM_ERRORS:
+                log.setInfo('Llevamos más de ' + str(NUM_ERRORS) +
+                            ' por debajo del objetivo de ' +
+                            str(MINIMUM_SPEED))
+                i = -1
+        else:
+            i = -1
+        time.sleep(10)
