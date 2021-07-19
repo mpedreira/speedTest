@@ -27,7 +27,7 @@ endpoint = {}
 payload = {}
 endpoint[
     'uri'] = 'https://content.rolex.com/dam/homepage/hss/watches/classic-watches/day-date/day-date-40/homepage-day-date-40-m228238-0042.mp4'
-#endpoint[
+# endpoint[
 #    'uri'] = 'https://releases.ubuntu.com/20.04.2.0/ubuntu-20.04.2.0-desktop-amd64.iso'
 endpoint['certificate'] = False
 payload['data'] = ''
