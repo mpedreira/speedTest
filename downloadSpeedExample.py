@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from classes.jira import *
 from classes.configurationChangeManagement import *
+from classes.whatismyip import * 
 from classes.logger import *
 from classes.httpRequest import *
 from classes.grafanaCloud import *
@@ -14,8 +15,8 @@ from classes.jsd import *
 
 MINIMUM_SPEED = 100
 NUM_ERRORS = 8
-METRIC = 'Velocidad_de_la_Wifi'
 SLEEP = 10
+METRIC = 'Velocidad en CASA'
 
 # MAIN
 config = configurationChangeManagement()
@@ -26,6 +27,7 @@ if (not config.isDebug()):
 date = datetime.datetime.now()
 now = date.strftime('%d/%m/%Y %H:%M:%S')
 log.setInfo('Running at ' + now)
+ip = whatIsMyIP(config)
 endpoint = {}
 endpoint['apikey']='174504:eyJrIjoiODVmYjc5NWI0M2Y5YzU5YmUzYjZjMGNkYzMxMTFmYjllYjE1NTg0MSIsIm4iOiJzcGVlZFRlc3QiLCJpZCI6NTI3NzM1fQ=='
 endpoint['url']='https://graphite-blocks-prod-us-central1.grafana.net/graphite/metrics'
