@@ -4,17 +4,18 @@
 from classes.activeDirectory import activeDirectory
 from classes.basics import *
 from classes.logger import logger
-from classes.httpRequest import * 
+from classes.httpRequest import *
 import json
 import requests
 import smtplib
 import ssl
 
+
 class grafanaCloud:
     def __init__(self, config, endpoint):
         # pylint: disable=maybe-no-member
         self.config = config
-        self.log = logger(self.config,__name__)
+        self.log = logger(self.config, __name__)
         self.endpoint = {}
         self.endpoint['url'] = endpoint['url']
         self.endpoint['apikey'] = endpoint['apikey']
@@ -23,23 +24,21 @@ class grafanaCloud:
     def setMetrics(self, metrics):
         grafana_data = []
         for m in metrics:
-            grafana_data.append(
-                {
-                    'name': m[0],
-                    'metric': m[0],
-                    'value': float(m[2]),
-                    'interval': int(m[1]),
-                    'unit': '',
-                    'time': int(m[3].timestamp()),
-                    'mtype': 'count',
-                    'tags': [],
-                }
-            )
+            grafana_data.append({
+                'name': m[0],
+                'metric': m[0],
+                'value': float(m[2]),
+                'interval': int(m[1]),
+                'unit': '',
+                'time': int(m[3].timestamp()),
+                'mtype': 'count',
+                'tags': [],
+            })
         # sort by ts
         grafana_data.sort(key=lambda obj: obj['time'])
         endpoint = {}
         payload = {}
-        endpoint['uri'] = self.endpoint['url'] 
+        endpoint['uri'] = self.endpoint['url']
         endpoint['certificate'] = False
         payload['headers'] = {
             "Authorization": "Bearer %s" % self.endpoint['apikey'],
@@ -51,7 +50,9 @@ class grafanaCloud:
         obj = httpRequest(endpoint, payload)
         obj.postRequest()
         if not obj.isOKResponse():
-            self.log.setError('Error posting the metrics with response code ' + str(obj.response.status_code))
+            self.log.setError(
+                'Error posting the metrics with response code ' + str(obj.response.status_code)
+            )
             raise Exception(obj.response.text)
         self.log.setDebug('%s: %s' % (obj.response.status_code, obj.response.text))
         obj = ''
