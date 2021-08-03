@@ -37,7 +37,7 @@ class httpRequest:
         self.getRequest()
         end = time.time()
         seconds = (end - start)
-        size = int(self.response.headers['Content-Length']) * 8 / 1024 / 1024
+        size = int(self.response.headers['Content-Length']) * 8 * 5 / 1024 / 1024
         speed = round((size / seconds), 2)
         self.response.close()
         self.log.setInfo("Nos hemos bajado " + str(round(size, 2)) + "M en " +
