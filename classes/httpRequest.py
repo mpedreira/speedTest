@@ -40,10 +40,10 @@ class httpRequest:
         size = int(self.response.headers['Content-Length']) * 8 * 5 / 1024 / 1024
         speed = round((size / seconds), 2)
         self.response.close()
-        self.log.setInfo("Nos hemos bajado " + str(round(size, 2)) + "M en " +
-                         str(round(seconds, 2)) +
-                         " segundos a una velocidad de " + str(speed) +
-                         ' mbps')
+        self.log.setInfo(
+            "Nos hemos bajado " + str(round(size, 2)) + "M en " + str(round(seconds, 2)) +
+            " segundos a una velocidad de " + str(speed) + ' mbps'
+        )
         return speed
 
     def setFiles(self, payload):
@@ -73,11 +73,13 @@ class httpRequest:
             return False
 
     def deleteRequest(self):
-        self.response = requests.delete(self.endpoint['uri'],
-                                        auth=self.payload['auth'],
-                                        data=self.payload['data'],
-                                        headers=self.payload['headers'],
-                                        verify=self.endpoint['certificate'])
+        self.response = requests.delete(
+            self.endpoint['uri'],
+            auth=self.payload['auth'],
+            data=self.payload['data'],
+            headers=self.payload['headers'],
+            verify=self.endpoint['certificate']
+        )
         self.log.setDebug('DELETE made to ' + self.endpoint['uri'])
         self.log.setDebug('The payload is' + str(self.payload['data']))
         return self.isOKResponse()
@@ -118,22 +120,26 @@ class httpRequest:
     #     return self.isOKResponse()
 
     def patchRequest(self):
-        self.response = requests.patch(self.endpoint['uri'],
-                                       data=self.payload['data'],
-                                       headers=self.payload['headers'],
-                                       auth=self.payload['auth'],
-                                       verify=self.endpoint['certificate'])
+        self.response = requests.patch(
+            self.endpoint['uri'],
+            data=self.payload['data'],
+            headers=self.payload['headers'],
+            auth=self.payload['auth'],
+            verify=self.endpoint['certificate']
+        )
         self.log.setDebug('PATCH made to ' + self.endpoint['uri'])
         self.log.setDebug('The payload is' + str(self.payload['data']))
         return self.isOKResponse()
 
     def postRequest(self):
-        self.response = requests.post(self.endpoint['uri'],
-                                      auth=self.payload['auth'],
-                                      data=self.payload['data'],
-                                      headers=self.payload['headers'],
-                                      files=self.payload['files'],
-                                      verify=self.endpoint['certificate'])
+        self.response = requests.post(
+            self.endpoint['uri'],
+            auth=self.payload['auth'],
+            data=self.payload['data'],
+            headers=self.payload['headers'],
+            files=self.payload['files'],
+            verify=self.endpoint['certificate']
+        )
         self.log.setDebug('POST made to ' + self.endpoint['uri'])
         self.log.setDebug('The payload is' + str(self.payload['data']))
         return self.isOKResponse()
@@ -152,11 +158,13 @@ class httpRequest:
     #     return self.isOKResponse()
 
     def putRequest(self):
-        self.response = requests.put(self.endpoint['uri'],
-                                     auth=self.payload['auth'],
-                                     data=json.dumps(self.payload['data']),
-                                     headers=self.payload['headers'],
-                                     verify=self.endpoint['certificate'])
+        self.response = requests.put(
+            self.endpoint['uri'],
+            auth=self.payload['auth'],
+            data=json.dumps(self.payload['data']),
+            headers=self.payload['headers'],
+            verify=self.endpoint['certificate']
+        )
         self.log.setDebug('PUT made to ' + self.endpoint['uri'])
         self.log.setDebug('The payload is' + str(self.payload['data']))
         return self.isOKResponse()

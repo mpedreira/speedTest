@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from classes.httpRequest import *
 
+
 class whatIsMyIP(httpRequest):
     def __init__(self, config):
         endpoint = {}
@@ -12,7 +13,7 @@ class whatIsMyIP(httpRequest):
         payload['auth'] = None
         payload['headers'] = ''
         payload['config'] = config
-        httpRequest.__init__(self,endpoint,payload)
+        httpRequest.__init__(self, endpoint, payload)
 
     def getPublicIP(self):
         self.getRequest()
