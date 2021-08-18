@@ -25,14 +25,14 @@ class grafanaCloud:
         grafana_data = []
         for m in metrics:
             grafana_data.append({
-                'name': m[0],
-                'metric': m[0],
-                'value': float(m[2]),
-                'interval': int(m[1]),
-                'unit': '',
-                'time': int(m[3].timestamp()),
+                'name': m['name'],
+                'metric': m['metric'],
+                'value': float(m['value']),
+                'interval': int(m['interval']),
+                'unit': m['unit'],
+                'time': int(m['date'].timestamp()),
                 'mtype': 'count',
-                'tags': [],
+                'tags': m['tags'],
             })
         # sort by ts
         grafana_data.sort(key=lambda obj: obj['time'])
@@ -50,10 +50,10 @@ class grafanaCloud:
         obj = httpRequest(endpoint, payload)
         obj.postRequest()
         if not obj.isOKResponse():
-            self.log.setError(
-                'Error posting the metrics with response code ' + str(obj.response.status_code)
-            )
+            self.log.setError('Error posting the metrics with response code ' +
+                              str(obj.response.status_code))
             raise Exception(obj.response.text)
-        self.log.setDebug('%s: %s' % (obj.response.status_code, obj.response.text))
+        self.log.setDebug('%s: %s' %
+                          (obj.response.status_code, obj.response.text))
         obj = ''
         return True
