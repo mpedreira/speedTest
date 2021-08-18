@@ -32,7 +32,7 @@ class grafanaCloud:
                 'unit': m['unit'],
                 'time': int(m['date'].timestamp()),
                 'mtype': 'count',
-                'tags': m['tags'],
+                'tags': m['tags']
             })
         # sort by ts
         grafana_data.sort(key=lambda obj: obj['time'])
