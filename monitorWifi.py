@@ -18,16 +18,6 @@ UNIT = 'mbps'
 TAGS = []
 
 
-def setGrafanaInstance(config):
-    endpoint = {}
-    endpoint[
-        'apikey'] = '174504:eyJrIjoiODVmYjc5NWI0M2Y5YzU5YmUzYjZjMGNkYzMxMTFmYjllYjE1NTg0MSIsIm4iOiJzcGVlZFRlc3QiLCJpZCI6NTI3NzM1fQ=='
-    endpoint[
-        'url'] = 'https://graphite-blocks-prod-us-central1.grafana.net/graphite/metrics'
-    grafanaInstance = grafanaCloud(config, endpoint)
-    return grafanaInstance
-
-
 def setGrafanaData(grafanaInstance, name, date, speed, sleep):
     metrics = [{
         'name': name,
@@ -49,7 +39,7 @@ if (not config.isDebug()):
 date = datetime.datetime.now()
 now = date.strftime('%d/%m/%Y %H:%M:%S')
 log.setInfo('Running at ' + now)
-grafanaInstance = setGrafanaInstance(config)
+grafanaInstance = grafanaCloud(config)
 last_date = datetime.datetime.now() - relativedelta(second=+59)
 server = '14979'
 test = speedTest(config, server)

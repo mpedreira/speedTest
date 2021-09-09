@@ -11,13 +11,10 @@ class configurationChangeManagement(configuration):
         configuration.__init__(self)
         self.teams = {}
         args = self.__parseArgs__()
-        self.user['username'] = args.user
         self.setConfigFile(args.configFile)
         logs = self.setConfigAttributes('LOGGING')
         self.debugFolder = logs['debugfolder']
         self.debugfile = self.debugFolder + logs['debugfile']
-        self.__setPassword__(args)
-        self.__getBasicAuth__()
         consolelevel = logs['console_level']
         self.__setConsoleDebug__(consolelevel)
         self.args['debugLevel'] = self.__setDebug__(args)
@@ -27,11 +24,9 @@ class configurationChangeManagement(configuration):
 
     def __parseArgs__(self):
         parser = argparse.ArgumentParser()
-        parser.add_argument('user', help='user for login in inet')
         parser.add_argument('-j',
                             '--jiraID',
                             help='Is the Jira ID you want to work with')
-        parser.add_argument('-p', '--password', help='Password for user')
         parser.add_argument('-d',
                             '--debug',
                             choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'],

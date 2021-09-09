@@ -12,13 +12,11 @@ import ssl
 
 
 class grafanaCloud:
-    def __init__(self, config, endpoint):
+    def __init__(self, config):
         # pylint: disable=maybe-no-member
         self.config = config
         self.log = logger(self.config, __name__)
-        self.endpoint = {}
-        self.endpoint['url'] = endpoint['url']
-        self.endpoint['apikey'] = endpoint['apikey']
+        self.endpoint = self.config.setConfigAttributes('GRAFANA')
         self.log = logger(self.config, __name__)
 
     def setMetrics(self, metrics):

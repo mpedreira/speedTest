@@ -33,9 +33,10 @@ class speedTest:
                 'This command requires speedTestCLI https://www.speedtest.net/apps/cli'
             )
             return speedtestResult
-        download = speedtestResult['download']['bandwidth']
+        download = speedtestResult['download'][
+            'bandwidth'] * 8 / 1000.0 / 1000.0
 
-        upload = speedtestResult['upload']['bandwidth']
+        upload = speedtestResult['upload']['bandwidth'] * 8 / 1000.0 / 1000.0
         latency = speedtestResult['ping']['latency']
         self.log.setInfo('Enviados datos por el server ' + self.server +
                          ': Download -> ' + str(round(download, 2)) +
