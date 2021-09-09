@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from urllib.parse import urlparse
+import datetime
 
 
 def eliminar_caracteres(texto):
