@@ -4,22 +4,16 @@
 from classes.jira import *
 from classes.configurationChangeManagement import *
 from dateutil.relativedelta import relativedelta
-from classes.whatismyip import *
 from classes.logger import *
-from classes.httpRequest import *
+from classes.speedTest import *
 from classes.grafanaCloud import *
 import datetime
-import csv
-import json
-import sys
-import ssl
-from classes.jsd import *
 
 MINIMUM_SPEED = 100
 NUM_ERRORS = 8
-SLEEP = 30
-NAME = 'Bandwidth'
-METRIC = 'CASA'
+SLEEP = 330
+NAME = 'en_INDITEX'
+METRIC = 'en_INDITEX'
 UNIT = 'mbps'
 TAGS = []
 
@@ -34,25 +28,9 @@ def setGrafanaInstance(config):
     return grafanaInstance
 
 
-def setHttpInstance(config):
-    endpoint = {}
-    payload = {}
-    endpoint[
-        'uri'] = 'https://content.rolex.com/dam/homepage/hss/watches/classic-watches/day-date/day-date-40/homepage-day-date-40-m228238-0042.mp4'
-    # endpoint[
-    #    'uri'] = 'https://releases.ubuntu.com/20.04.2.0/ubuntu-20.04.2.0-desktop-amd64.iso'
-    endpoint['certificate'] = False
-    payload['data'] = ''
-    payload['auth'] = ''
-    payload['config'] = config
-    payload['headers'] = None
-    httpInstance = httpRequest(endpoint, payload)
-    return httpInstance
-
-
-def setGrafanaData(grafanaInstance, date, speed, sleep):
+def setGrafanaData(grafanaInstance, name, date, speed, sleep):
     metrics = [{
-        'name': NAME,
+        'name': name,
         'metric': METRIC,
         'interval': sleep,
         'value': speed,
@@ -68,22 +46,32 @@ config = configurationChangeManagement()
 log = logger(config, 'main')
 if (not config.isDebug()):
     sys.tracebacklimit = 0
-# MAIN
 date = datetime.datetime.now()
 now = date.strftime('%d/%m/%Y %H:%M:%S')
 log.setInfo('Running at ' + now)
-ip = whatIsMyIP(config)
-httpInstance = setHttpInstance(config)
 grafanaInstance = setGrafanaInstance(config)
-last_date = datetime.datetime.now() - relativedelta(second=+6)
-
-while True:
-    try:
-        date = datetime.datetime.now()
-        speed = httpInstance.speedTest()
-        sleep = (date - last_date).seconds
-        last_date = date
-        setGrafanaData(grafanaInstance, date, speed, sleep)
-        time.sleep(SLEEP)
-    except:
-        pass
+last_date = datetime.datetime.now() - relativedelta(second=+59)
+server = '14979'
+test = speedTest(config, server)
+date = datetime.datetime.now()
+result = test.run()
+try:
+    download = result['download']['bandwidth'] * 8 / 1000.0 / 1000.0
+except:
+    print(result)
+upload = result['upload']['bandwidth'] * 8 / 1000.0 / 1000.0
+latency = result['ping']['latency']
+sleep = (date - last_date).seconds
+if (sleep == 0):
+    sleep = 1
+last_date = date
+name = 'DOWNLOAD_' + NAME
+setGrafanaData(grafanaInstance, name, date, download, sleep)
+name = 'UPLOAD_' + NAME
+setGrafanaData(grafanaInstance, name, date, upload, sleep)
+name = 'LATENCY_' + NAME
+setGrafanaData(grafanaInstance, name, date, latency, sleep)
+#log.setInfo('Enviados datos por el server ' + server + ': Download -> ' +
+#            str(round(download, 2)) + ' Mbps Upload -> ' +
+#            str(round(upload, 2)) + ' Mbps Latency -> ' +
+#            str(round(latency, 2)) + ' ms')
