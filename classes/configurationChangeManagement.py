@@ -3,7 +3,7 @@
 from classes.configuration import *
 
 # CONSTANTES
-CONFIGFILE = 'config/jira.ini'
+CONFIGFILE = 'config/PRO-SpeedTest.ini'
 
 
 class configurationChangeManagement(configuration):
