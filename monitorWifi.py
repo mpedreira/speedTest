@@ -12,7 +12,7 @@ NUM_ERRORS = 8
 SLEEP = 330
 
 
-def setGrafanaData(grafanaInstance, name, date, speed, sleep, unit, metric, tags='[]'):
+def setGrafanaData(grafanaInstance, name, date, speed, sleep, unit, metric, tags=[]):
     metrics = [{
         'name': name,
         'metric': metric,
