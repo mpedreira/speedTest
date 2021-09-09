@@ -50,10 +50,10 @@ class grafanaCloud:
         obj = httpRequest(endpoint, payload)
         obj.postRequest()
         if not obj.isOKResponse():
-            self.log.setError('Error posting the metrics with response code ' +
-                              str(obj.response.status_code))
+            self.log.setError(
+                'Error posting the metrics with response code ' + str(obj.response.status_code)
+            )
             raise Exception(obj.response.text)
-        self.log.setDebug('%s: %s' %
-                          (obj.response.status_code, obj.response.text))
+        self.log.setDebug('%s: %s' % (obj.response.status_code, obj.response.text))
         obj = ''
         return True
