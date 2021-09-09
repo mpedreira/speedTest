@@ -57,7 +57,6 @@ class httpRequest:
         if self.isOKResponse():
             jsonResponse = json.loads(normalize('NFC', self.response.text))
         else:
-            print(self.response.text)
             self.log.setDebug(self.response.text)
             self.log.setError('Authentication Failed')
             raise Exception('AuthenticationError')

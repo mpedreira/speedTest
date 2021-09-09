@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 from classes.logger import *
 from classes.speedTest import *
 from classes.grafanaCloud import *
+from classes.speedTest import *
 import datetime
 
 MINIMUM_SPEED = 100
