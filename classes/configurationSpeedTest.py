@@ -6,7 +6,7 @@ from classes.configuration import *
 CONFIGFILE = 'config/PRO-SpeedTest.ini'
 
 
-class configurationChangeManagement(configuration):
+class configurationSpeedTest(configuration):
     def __init__(self):
         configuration.__init__(self)
         self.teams = {}
@@ -24,19 +24,20 @@ class configurationChangeManagement(configuration):
 
     def __parseArgs__(self):
         parser = argparse.ArgumentParser()
-        parser.add_argument('-j',
-                            '--jiraID',
-                            help='Is the Jira ID you want to work with')
-        parser.add_argument('-d',
-                            '--debug',
-                            choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'],
-                            help='Debug level in logFile')
+        parser.add_argument('-j', '--jiraID', help='Is the Jira ID you want to work with')
+        parser.add_argument(
+            '-d',
+            '--debug',
+            choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'],
+            help='Debug level in logFile'
+        )
         parser.add_argument('-c', '--configFile', help='ConfigFile Path')
         parser.add_argument(
             '-v',
             '--verbose',
             help='Saves the output of the failed interventions',
-            action='store_true')
+            action='store_true'
+        )
         return parser.parse_args()
 
     def setConfigFile(self, configFile):

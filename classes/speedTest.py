@@ -11,15 +11,14 @@ import requests
 from classes.basics import *
 from classes.logger import logger
 
-SERVER = '41201'
-
 
 class speedTest:
-    def __init__(self, config, server=SERVER):
+    def __init__(self, config):
         self.config = config
         self.log = logger(self.config, __name__)
+        self.info = self.config.setConfigAttributes('SPEEDTEST')
         # pylint: disable=maybe-no-member
-        self.server = server
+        self.server = self.info['server']
 
     def run(self):
         command = 'speedtest -f json-pretty -s ' + self.server
@@ -33,15 +32,15 @@ class speedTest:
                 'This command requires speedTestCLI https://www.speedtest.net/apps/cli'
             )
             return speedtestResult
-        download = speedtestResult['download'][
-            'bandwidth'] * 8 / 1000.0 / 1000.0
+        download = speedtestResult['download']['bandwidth'] * 8 / 1000.0 / 1000.0
 
         upload = speedtestResult['upload']['bandwidth'] * 8 / 1000.0 / 1000.0
         latency = speedtestResult['ping']['latency']
-        self.log.setInfo('Enviados datos por el server ' + self.server +
-                         ': Download -> ' + str(round(download, 2)) +
-                         ' Mbps Upload -> ' + str(round(upload, 2)) +
-                         ' Mbps Latency -> ' + str(round(latency, 2)) + ' ms')
+        self.log.setInfo(
+            'Enviados datos por el server ' + self.server + ': Download -> ' +
+            str(round(download, 2)) + ' Mbps Upload -> ' + str(round(upload, 2)) +
+            ' Mbps Latency -> ' + str(round(latency, 2)) + ' ms'
+        )
         return speedtestResult
 
     def __getSpeed(self, speed):
