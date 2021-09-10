@@ -20,6 +20,12 @@ class speedTest:
         # pylint: disable=maybe-no-member
         self.server = self.info['server']
 
+    def setServer(self, server):
+        if (not server.isnumeric()):
+            return False
+        self.server = server
+        return True
+
     def run(self):
         command = 'speedtest -f json-pretty -s ' + self.server
         stream = os.popen(command)

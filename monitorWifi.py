@@ -41,6 +41,7 @@ metric = speedTestInstance.info['metric']
 unit = speedTestInstance.info['unit']
 server = speedTestInstance.info['server']
 date = datetime.datetime.now()
+linea = '_ORANGE'
 result = speedTestInstance.run()
 try:
     download = result['download']['bandwidth'] * 8 / 1000.0 / 1000.0
@@ -53,9 +54,32 @@ sleep = (date - last_date).seconds
 if (sleep == 0):
     sleep = 1
 last_date = date
-name = 'DOWNLOAD_' + ubicacion
+name = 'DOWNLOAD_' + ubicacion + linea
 setGrafanaData(grafanaInstance, name, date, download, sleep, unit, metric)
-name = 'UPLOAD_' + ubicacion
+name = 'UPLOAD_' + ubicacion + linea
 setGrafanaData(grafanaInstance, name, date, upload, sleep, unit, metric)
-name = 'LATENCY_' + ubicacion
+name = 'LATENCY_' + ubicacion + linea
+setGrafanaData(grafanaInstance, name, date, latency, sleep, unit, metric)
+
+linea = '_REDESSALMANTINAS'
+server = '41201'
+speedTestInstance.setServer(server)
+result = speedTestInstance.run()
+try:
+    download = result['download']['bandwidth'] * 8 / 1000.0 / 1000.0
+except:
+    print(result)
+
+upload = result['upload']['bandwidth'] * 8 / 1000.0 / 1000.0
+latency = result['ping']['latency']
+sleep = (date - last_date).seconds
+if (sleep == 0):
+    sleep = 1
+
+last_date = date
+name = 'DOWNLOAD_' + ubicacion + linea
+setGrafanaData(grafanaInstance, name, date, download, sleep, unit, metric)
+name = 'UPLOAD_' + ubicacion + linea
+setGrafanaData(grafanaInstance, name, date, upload, sleep, unit, metric)
+name = 'LATENCY_' + ubicacion + linea
 setGrafanaData(grafanaInstance, name, date, latency, sleep, unit, metric)
